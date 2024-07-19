@@ -45,6 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
     images.forEach(img => {
         img.addEventListener('dragstart', dragStart);
         img.addEventListener('dragend', dragEnd);
+        img.addEventListener('touchstart', touchStart);
+        img.addEventListener('touchend', touchEnd);
     });
 
     const cells = document.querySelectorAll('#grid div');
@@ -110,4 +112,19 @@ document.addEventListener('DOMContentLoaded', () => {
             savePositions();
         }
     }
+
+    function touchStart(event) {
+        event.preventDefault();
+        draggedItem = event.touches[0].target;
+    }
+
+    function touchEnd(event) {
+        let touch = event.changedTouches[0];
+        let cell = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (cell && cell.classList.contains('cell') && draggedItem) {
+            cell.appendChild(draggedItem);
+        }
+        draggedItem = null;
+    }
+
 });
